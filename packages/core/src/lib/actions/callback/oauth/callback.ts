@@ -66,7 +66,11 @@ export async function handleOAuth(
       [o.allowInsecureRequests]: true,
       [o.customFetch]: provider[customFetch],
     })
-    as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+    // as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+    as = await o.processDiscoveryResponse(
+      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown) : issuer,
+      discoveryResponse
+    );
 
     if (!as.token_endpoint)
       throw new TypeError(
@@ -204,13 +208,27 @@ export async function handleOAuth(
           const discoveryResponse = await o.discoveryRequest(issuer, {
             [o.customFetch]: provider[customFetch],
           })
-          as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+          // as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+          as = await o.processDiscoveryResponse(
+            provider.id === "azure-ad-b2c"
+              ? new URL(provider.wellKnown)
+              : issuer,
+            discoveryResponse
+          );
         }
         break
       }
       default:
         break
     }
+  }
+  console.log("callback!!!!!!handleOAuth!!!!!!!!!!!!");
+  if (provider.id === "azure-ad-b2c") {
+    let tmpResponse = await codeGrantResponse.clone().json();
+    tmpResponse.access_token = tmpResponse.id_token;
+    codeGrantResponse = new Response(JSON.stringify(tmpResponse), {
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const processedCodeResponse = await o.processAuthorizationCodeResponse(
     as,
