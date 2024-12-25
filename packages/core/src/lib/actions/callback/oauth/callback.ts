@@ -210,7 +210,7 @@ export async function handleOAuth(
           })
           // as = await o.processDiscoveryResponse(issuer, discoveryResponse)
           as = await o.processDiscoveryResponse(
-            provider.id === "azure-ad-b2c"
+            provider.id === "azure-ad-b2c" as typeof provider.id
               ? new URL(provider.wellKnown!)
               : issuer,
             discoveryResponse
