@@ -32,7 +32,7 @@ export async function getAuthorizationUrl(
     })
     // const as = await o.processDiscoveryResponse(issuer, discoveryResponse)
     const as = await o.processDiscoveryResponse(
-      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown) : issuer,
+      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown!) : issuer,
       discoveryResponse
     );
 
