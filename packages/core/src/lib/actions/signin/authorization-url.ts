@@ -30,7 +30,11 @@ export async function getAuthorizationUrl(
       // TODO: move away from allowing insecure HTTP requests
       [o.allowInsecureRequests]: true,
     })
-    const as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+    // const as = await o.processDiscoveryResponse(issuer, discoveryResponse)
+    const as = await o.processDiscoveryResponse(
+      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown) : issuer,
+      discoveryResponse
+    );
 
     if (!as.authorization_endpoint) {
       throw new TypeError(
