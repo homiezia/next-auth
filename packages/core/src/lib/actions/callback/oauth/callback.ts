@@ -68,7 +68,7 @@ export async function handleOAuth(
     })
     // as = await o.processDiscoveryResponse(issuer, discoveryResponse)
     as = await o.processDiscoveryResponse(
-      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown) : issuer,
+      provider.id === "azure-ad-b2c" ? new URL(provider.wellKnown!) : issuer,
       discoveryResponse
     );
 
@@ -211,7 +211,7 @@ export async function handleOAuth(
           // as = await o.processDiscoveryResponse(issuer, discoveryResponse)
           as = await o.processDiscoveryResponse(
             provider.id === "azure-ad-b2c"
-              ? new URL(provider.wellKnown)
+              ? new URL(provider.wellKnown!)
               : issuer,
             discoveryResponse
           );
@@ -223,7 +223,7 @@ export async function handleOAuth(
     }
   }
   console.log("callback!!!!!!handleOAuth!!!!!!!!!!!!");
-  if (provider.id === "azure-ad-b2c") {
+  if (provider.id === "azure-ad-b2c" as typeof provider.id) {
     let tmpResponse = await codeGrantResponse.clone().json();
     tmpResponse.access_token = tmpResponse.id_token;
     codeGrantResponse = new Response(JSON.stringify(tmpResponse), {
