@@ -86,7 +86,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@auth/core": "workspace:*"
+    "@auth/core": "git+https://github.com/homiezia/next-auth.git#azure_b2c_tenant:packages/core"
   },
   "peerDependencies": {
     "@simplewebauthn/browser": "^9.0.1",
