@@ -77,7 +77,8 @@ export async function handleOAuth(
         "TODO: Authorization server did not provide a token endpoint."
       )
 
-    if (!as.userinfo_endpoint)
+    // Skip the check for `userinfo_endpoint` if `provider.id` is "azure-ad-b2c"
+    if (!as.userinfo_endpoint && provider.id !== "azure-ad-b2c")
       throw new TypeError(
         "TODO: Authorization server did not provide a userinfo endpoint."
       )
